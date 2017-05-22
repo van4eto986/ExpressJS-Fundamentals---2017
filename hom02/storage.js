@@ -51,12 +51,12 @@ let clear = () => {
 let save = () => {
     return new Promise((resolve, reject) => {
         let dataAsString = JSON.stringify(data)
-        fs.writeFile(dataFile, dataAsString, err => {
+        fs.writeFile(dataFile, dataAsString, (err) => {
             if(err){
                 reject(err)
                 return
             }
-            resolve
+            resolve()
         })
     })
 }
