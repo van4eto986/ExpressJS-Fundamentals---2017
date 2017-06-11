@@ -1,0 +1,30 @@
+{{#each articles}}
+  <div class="mb60 article-details">
+    <h2>{{this.title}}</h2>
+    <p>{{this.description}}</p>
+     {{#if ../currentUser}}
+     <a href="/article/details/{{this._id}}">details</a>
+     {{/if}}
+{{#if ../currentUser_id}}
+  <a href="/articles/edit/{{this._id}}">Edit</a>
+{{/if}}
+{{#if ../isAdmin}}
+  <a href="/articles/edit/{{this._id}}">Edit</a>
+{{/if}}
+{{#if ../isAdmin}}
+  <a href="/articles/delete/{{this._id}}">Delete</a>
+{{/if}}
+  </div>
+{{else}}
+  <h2>No articles available!</h2>
+{{/each}}
+
+<div class="font-3x">
+  {{#if hasPrevPage}}
+    <a href="/article/list?page={{prevPage}}">&lt;&lt;</a>
+    &nbsp; &nbsp; &nbsp;
+  {{/if}}
+  {{#if hasNextPage}}
+    <a href="/article/list?page={{nextPage}}">&gt;&gt;</a>
+  {{/if}}
+</div>
