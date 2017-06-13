@@ -11,14 +11,9 @@ module.exports = (app) => {
   app.post('/users/login', controllers.users.loginPost)
   app.post('/users/logout', controllers.users.logout)
 
-  app.get('/article/add', auth.isAuthenticated, controllers.articles.addGet)
-  app.post('/article/add', auth.isAuthenticated, controllers.articles.addPost)
-  app.get('/articles/edit/:id', auth.isAuthenticated, controllers.articles.editGet)
-  app.post('/articles/edit/:id', auth.isAuthenticated, controllers.articles.editPost)
-  app.get('/articles/delete/:id', auth.isAuthenticated, controllers.articles.deleteGet)
- 
-  app.get('/article/list', controllers.articles.all)
-  app.get('/article/details/:id', auth.isAuthenticated, controllers.articles.detailsGet)
+  app.get('/thread/add', auth.isAuthenticated, controllers.threads.addGet)
+  app.post('/thread/add', auth.isAuthenticated, controllers.threads.addPost)
+  app.get('/thread/list', controllers.threads.all)
 
   app.all('*', (req, res) => {
     res.status(404)

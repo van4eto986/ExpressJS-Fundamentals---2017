@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const User = require('../data/User')
-
-require('../data/Article')
+require('../data/Thread')
+require('../data/Comment')
 
 mongoose.Promise = global.Promise
 
