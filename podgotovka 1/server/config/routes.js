@@ -34,9 +34,11 @@ module.exports = (app) => {
   app.post('/answer/delete/:id', auth.isInRole('Admin'), controllers.answer.deletePost)
   app.get('/profile/:username', auth.isAuthenticated, controllers.users.profile)
   app.get('/list', controllers.thread.all)
+  app.get('/tag/:tagName', controllers.thread.viewTag)
   app.get('/list/:id', controllers.category.getThreads)
   app.post('/block/:id', auth.isInRole('Admin'), controllers.users.block)
   app.post('/unblock/:id', auth.isInRole('Admin'), controllers.users.unblock)
+  app.get('/thread/findTag', auth.isAuthenticated, controllers.thread.findTag)
 
   app.post('/like/:id', auth.isAuthenticated, controllers.thread.like)
   app.post('/dislike/:id', auth.isAuthenticated, controllers.thread.dislike)

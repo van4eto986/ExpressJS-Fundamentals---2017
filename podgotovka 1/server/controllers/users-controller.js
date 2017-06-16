@@ -91,23 +91,43 @@ module.exports = {
 
   profile: (req, res) => {
     let username = req.params.username
-
-    User.findOne({username: username}).then(user => {
-      Thread.find({author: user._id}).then(threads => {
-        Answer.find({author: user._id}).populate('thread').then(answers => {
-          res.render('users/profile', {
-            user: user,
-            threads: threads,
-            answers: answers
+    User.findOne({username: username})
+      .then(user => {
+        Thread.find({author: user._id})
+          .then(threads => {
+            Answer.find({author: user._id}).populate('thread')
+              .then(answers => {
+                let handleThreads = []
+                let handlesPattern = /(@\w+)/g
+                Thread.find({})
+                  .then(allThreads => {
+                    for (let j in allThreads) {
+                      let text = allThreads[j].description
+                      let handles = text.match(handlesPattern)
+                      for (let i in handles) {
+                        let currenthandle = handles[i].replace('@', '')
+                        if (currenthandle === user.username) {
+                          Thread.findById(allThreads[j]._id)
+                          .then(thread => {
+                            handleThreads.push(thread)
+                          })
+                        }
+                      }
+                    }
+                    res.render('users/profile', {
+                      user: user,
+                      threads: threads,
+                      answers: answers,
+                      handleThreads: handleThreads
+                    })
+                  })
+              })
           })
-        })
       })
-    })
   },
 
   block: (req, res) => {
     let id = req.params.id
-
     User.findByIdAndUpdate(id, {$set: {isBlocked: true}}).then(user => {
       res.redirect(`/profile/${user.username}`)
     })
@@ -115,7 +135,6 @@ module.exports = {
 
   unblock: (req, res) => {
     let id = req.params.id
-
     User.findByIdAndUpdate(id, {$set: {isBlocked: false}}).then(user => {
       res.redirect(`/profile/${user.username}`)
     })

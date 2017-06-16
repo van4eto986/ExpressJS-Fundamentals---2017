@@ -2,6 +2,8 @@ const Thread = require('../data/Thread')
 const Category = require('../data/Category')
 const Answer = require('../data/Answer')
 const User = require('../data/User')
+const Tag = require('../data/Tag')
+const errorHandler = require('../utilities/error-handler')
 
 module.exports = {
   addGet: (req, res) => {
@@ -26,13 +28,39 @@ module.exports = {
       title: threadReq.title,
       description: threadReq.description,
       category: threadReq.category,
+      image: threadReq.image,
       author: req.user._id
     }).then(thread => {
       Category.findByIdAndUpdate(thread.category.toString(), {$addToSet: {threads: thread._id}}).then(() => {
-        res.redirect(`/post/${thread._id}/${thread.title}`)
+        Tag.find({}).then(currentTags => {
+          let tagPattern = /(#\w+)/g
+          let text = thread.description
+          let tags = text.match(tagPattern)
+          let newTagNames = []
+          for (let j in currentTags) {
+            newTagNames.push(currentTags[j].tagName.toString())
+          }
+          for (let i in tags) {
+            let newTag = tags[i].replace('#', '').toLowerCase()
+            if (newTagNames.indexOf(newTag.toString()) === -1) {
+              Tag.create({
+                tagName: newTag.toString(),
+                threadMsg: [thread._id]
+              })
+            } else {
+              Tag.findOne({tagName: newTag.toString()}).then(tag => {
+                tag.threadMsg.push(thread._id)
+                tag.save()
+              })
+            }
+          }
+          res.redirect('/list')
+        })
       })
-    }).catch(() => {
+    }).catch(err => {
       Category.find().then(categories => {
+        let message = errorHandler.handleMongooseError(err)
+        res.locals.globalError = message
         res.render('thread/add', {
           categories: categories,
           thread: threadReq
@@ -61,6 +89,19 @@ module.exports = {
           }
         })
       })
+    })
+  },
+  viewTag: (req, res) => {
+    let tagName = req.params.tagName
+    Tag.findOne({tagName: tagName}).populate('threadMsg').then(tag => {
+      res.render('tags/all', {tag: tag})
+    })
+  },
+  findTag: (req, res) => {
+    let search = req.query.mytest
+    let tagName = search
+    Tag.findOne({tagName: tagName}).populate('threadMsg').then(tag => {
+      res.render('tags/all', {tag: tag})
     })
   },
   like: (req, res) => {
@@ -106,6 +147,7 @@ module.exports = {
       thread.title = threadReq.title
       thread.description = threadReq.description
       thread.category = threadReq.category
+      thread.image = threadReq.image
       thread.save().then(() => {
         if (oldCategory.toString() !== threadReq.category) {
           Category.findByIdAndUpdate(oldCategory, {$pull: {threads: {$in: [thread._id]}}}).then(() => {

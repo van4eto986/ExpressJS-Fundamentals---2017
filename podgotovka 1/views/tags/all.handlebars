@@ -1,0 +1,9 @@
+<h1>Tag {{tag.tagName}}</h1>
+
+{{#each tag.threadMsg}}
+  <article>
+    <img src="{{this.image}}" alt="image" />
+  </article>
+{{else}}
+  <p>No threads to show.</p>
+{{/each}}

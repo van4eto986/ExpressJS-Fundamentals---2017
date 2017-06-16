@@ -5,6 +5,7 @@
   <input type="text" name="title" required value="{{thread.title}}"/>
   <label for="description">Description</label>
   <textarea name="description" rows="10" required>{{thread.description}}</textarea>
+  <input type="url" name="image" value="{{thread.image}}" />
   <label for="category">Category:</label>
   <select name="category">
     {{#each categories}}

@@ -1,5 +1,8 @@
 <h1>All threads</h1>
-
+<form action="/thread/findTag" method="GET">
+  <input type="text" name="mytest" />
+  <input type="submit" value="Search" />
+</form>
 {{#each threads}}
   <article>
     <h3><a href="/post/{{this._id}}/{{this.title}}">{{this.title}}</a></h3>
