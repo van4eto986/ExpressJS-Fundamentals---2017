@@ -1,0 +1,22 @@
+{{#each posts}}
+<div>
+  <a href="/posts/{{this._id}}/{{this.title}}">
+  <h3>{{this.title}}</h3></a>
+  <span>posted on {{this.createdOn}}</span>
+  <p>{{this.description}}</p>
+  <span>views <b>{{this.views}}</b></span>&nbsp;&nbsp;&nbsp;
+  <span>likes <b>{{this.likes.length}}</b></span>
+</div>
+{{else}}
+<h3>No posts found</h3>
+{{/each}}
+
+<div class="pagination">
+  {{#if hasPrevPage}}
+    <a href="/posts/list?page={{prevPage}}">&lt;&lt;</a>
+    &nbsp; &nbsp; &nbsp;
+  {{/if}}
+  {{#if hasNextPage}}
+    <a href="/posts/list?page={{nextPage}}">&gt;&gt;</a>
+  {{/if}}
+</div>

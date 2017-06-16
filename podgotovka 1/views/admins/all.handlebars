@@ -1,0 +1,10 @@
+{{#each posts}}
+<div>
+  <a href="/posts/{{this._id}}/{{this.title}}">
+  <h3>{{this.title}}</h3></a>
+  <span>posted on {{this.createdOn}}</span>
+  <p>{{this.description}}</p>
+</div>
+{{else}}
+<h3>No posts found</h3>
+{{/each}}

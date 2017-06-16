@@ -1,0 +1,13 @@
+<form action="/admins/add" method="POST">
+  <div>
+    <select name="user" id="user">    
+    <option value="">Select user</option>
+    {{#each users}}
+    <option value="{{this._id}}">{{this.username}}</option>
+    {{else}}
+    <h3>No users</h3>
+    {{/each}}
+  </select>
+  </div><br>
+  <div><input type="submit" value="Add as Admin" class="btn btn-primary"></div>
+</form>
