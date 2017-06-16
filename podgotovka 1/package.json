@@ -11,8 +11,8 @@
     "blog",
     "system"
   ],
-  "author": "Kiril Georgiev",
-  "license": "UNLICENSED",
+  "author": "IK",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "1.17.2",
     "cookie-parser": "1.4.3",

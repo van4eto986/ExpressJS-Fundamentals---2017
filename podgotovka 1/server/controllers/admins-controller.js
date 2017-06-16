@@ -5,7 +5,7 @@ const Comment = mongoose.model('Comment')
 
 module.exports = {
   addGet: (req, res) => {
-    User.find({ 'roles': { '$ne': 'Admin' }})
+    User.find({'roles': { '$ne': 'Admin' }})
       .then(users => {
         res.render('admins/add', {users: users})
       })
