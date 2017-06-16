@@ -1,0 +1,40 @@
+<div>
+  <h3>{{post.title}}</h3>
+  <span>posted on {{post.createdOn}}</span>
+  <p>{{post.description}}</p>
+  <span>views <b>{{post.views}}</b></span>
+  <span>likes <b>{{post.likes.length}}</b></span>
+  {{#if post.like}}
+  <a href="/posts/like/post/{{post._id}}">Like</a>
+  {{/if}}
+  {{#if post.dislike}}
+  <a href="/posts/dislike/post/{{post._id}}">Unlike</a>
+  {{/if}}
+  {{#if isAdmin}}
+  <a href="/admins/edit/post/{{post._id}}" class="btn btn-primary">Edit Post</a>
+  <a href="/admins/delete/post/{{post._id}}" class="btn btn-danger">Delete Post</a> {{/if}}
+</div>
+<hr> 
+
+{{#each post.comments}}
+<div>
+  <span>Added from: <b>{{this.author.username}}</b></span><br/>
+  <span><i>on {{this.createdOn}}</i></span>
+  <p>{{this.text}}</p>
+
+  {{#if ../isAdmin}}
+  <a href="/admins/edit/comment/{{this._id}}" class="btn btn-primary">Edit comment</a>
+  <a href="/admins/delete/comment/{{this._id}}" class="btn btn-danger">Delete comment</a> {{/if}}
+</div>
+<br>
+{{else}}
+<p>No comments</p>
+{{/each}} 
+
+{{#if currentUser}}
+<form action="/comments/add" method="POST">
+  <input type="text" name="text" placeholder="Add comment...">
+  <input type="hidden" name="post" value="{{post._id}}">
+  <input type="submit" value="Add" class="btn btn-primary">
+</form>
+{{/if}}
