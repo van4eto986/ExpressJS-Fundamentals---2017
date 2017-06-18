@@ -1,0 +1,34 @@
+<div class="post-details">
+  <h2 class="post-title">{{thread.title}}</h2>
+  <h3 class="post-data">posted on: {{thread.date}} by: {{thread.author.username}}</h3>
+  <p class="post-content">{{thread.content}}</p>
+  
+  <span>Views: {{thread.views}}</span>
+  {{#if currentUser}}
+    {{#if hasLiked}}
+      <form id="dislike" method="post" action="/dislike/{{thread._id}}"></form>
+      <a href="javascript:document.getElementById('dislike').submit()">Dislike</a>
+    {{else}}
+      <form id="like" method="post" action="/like/{{thread._id}}"></form>
+      <a href="javascript:document.getElementById('like').submit()">Like</a>
+    {{/if}}
+  {{/if}}
+    <span>Likes: {{thread.likes}}</span>
+ 
+  {{#if currentUser}}
+    {{#if isActive}}
+      <form method="post">
+        <textarea name="content" rows="50"  maxlength="1000" placeholder="Add your messages..."></textarea>
+        <input type="submit" value="Add" />
+      </form>
+    {{/if}}
+  {{/if}}
+
+  <h3 class="messages">Messages:</h3>
+  {{#each messages}}
+    <div class="messages">
+      <p>{{this.content}}</p>
+      <p>by: {{this.author.username}}, on: {{this.date}}</p>
+    </div>
+  {{else}}
+</div>

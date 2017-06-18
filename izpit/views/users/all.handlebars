@@ -1,0 +1,19 @@
+<h1>All users</h1>
+
+<form method="post">
+  <label for="user">Select an user</label>
+  <select name="user">
+    {{#each users}}
+      <option value="{{this._id}}">{{this.username}}</option>
+    {{/each}}
+  </select>
+  <input type="submit" value="Make Admin" ?>
+</form>
+
+<h1>All admins</h1>
+<p>{{../globalMessage}}</p>
+<ul>
+  {{#each admins}}
+    <li><a href="/profile/{{this.username}}">{{this.username}}</a></li>
+  {{/each}}
+</ul> 
