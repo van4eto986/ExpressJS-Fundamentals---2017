@@ -84,7 +84,8 @@ module.exports = {
   all: (req, res) => {
     User.find({roles: {$in: ['Admin']}}).then(admins => {
       res.render('users/admin-all', {
-        admins: admins
+        admins: admins,
+        msg: res.locals.globalMessage
       })
     })
   },

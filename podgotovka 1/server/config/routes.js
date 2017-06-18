@@ -10,11 +10,14 @@ module.exports = (app) => {
   app.post('/users/login', controllers.users.loginPost)
   app.post('/users/logout', controllers.users.logout)
 
+  app.get('/profile/:username', auth.isAuthenticated, controllers.users.profile)
+
   app.get('/category/add', auth.isInRole('Admin'), controllers.category.addGet)
   app.post('/category/add', auth.isInRole('Admin'), controllers.category.addPost)
   app.get('/category/delete', auth.isInRole('Admin'), controllers.category.deleteGet)
   app.post('/category/delete', auth.isInRole('Admin'), controllers.category.deletePost)
   app.get('/categories', controllers.category.all)
+  app.get('/list/:id', controllers.category.getThreads) //листване на тредове по категория
 
   app.get('/admins/add', auth.isInRole('Admin'), controllers.users.addAdminGet)
   app.post('/admins/add', auth.isInRole('Admin'), controllers.users.addAdminPost)
@@ -27,18 +30,19 @@ module.exports = (app) => {
   app.get('/post/delete/:id', auth.isInRole('Admin'), controllers.thread.deleteGet)
   app.post('/post/delete/:id', auth.isInRole('Admin'), controllers.thread.deletePost)
   app.get('/post/:id/:name', controllers.thread.viewThreadGet)
+  app.get('/list', controllers.thread.all)
+
   app.post('/post/:id/:name', auth.isAuthenticated, controllers.answer.addPost)
   app.get('/answer/edit/:id', auth.isInRole('Admin'), controllers.answer.editGet)
   app.post('/answer/edit/:id', auth.isInRole('Admin'), controllers.answer.editPost)
   app.get('/answer/delete/:id', auth.isInRole('Admin'), controllers.answer.deleteGet)
   app.post('/answer/delete/:id', auth.isInRole('Admin'), controllers.answer.deletePost)
-  app.get('/profile/:username', auth.isAuthenticated, controllers.users.profile)
-  app.get('/list', controllers.thread.all)
+
   app.get('/tag/:tagName', controllers.thread.viewTag)
-  app.get('/list/:id', controllers.category.getThreads)
+  app.get('/thread/findTag', auth.isAuthenticated, controllers.thread.findTag)
+
   app.post('/block/:id', auth.isInRole('Admin'), controllers.users.block)
   app.post('/unblock/:id', auth.isInRole('Admin'), controllers.users.unblock)
-  app.get('/thread/findTag', auth.isAuthenticated, controllers.thread.findTag)
 
   app.post('/like/:id', auth.isAuthenticated, controllers.thread.like)
   app.post('/dislike/:id', auth.isAuthenticated, controllers.thread.dislike)
